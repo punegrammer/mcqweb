@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Quiz Entry</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; max-width: 800px; margin: auto; }
+        .container { display: flex; flex-direction: column; gap: 20px; }
+        .question { margin-bottom: 20px; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { display: flex; align-items: center; gap: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MCQ Quiz Entry 12th</h1>
+        <form id="quizForm">
+            <div>
+                <label for="roll_no">Roll No:</label>
+                <input type="text" id="roll_no" name="roll_no" required>
+            </div>
+            <div>
+                <label for="date">Date (dd-mm-yyyy):</label>
+                <input type="text" id="date" name="date" required>
+            </div>
+            <div id="questionsContainer">
+                <div class="question">
+                    <label>Question 1:</label>
+                    <input type="text" name="questions[]" placeholder="Enter question text" required>
+                    <div class="options">
+                        <div class="option">
+                            <input type="text" name="options[]" placeholder="Option A" required>
+                            <input type="radio" name="correct_option_0" value="0">
+                            <label>Correct</label>
+                        </div>
+                        <div class="option">
+                            <input type="text" name="options[]" placeholder="Option B" required>
+                            <input type="radio" name="correct_option_0" value="1">
+                            <label>Correct</label>
+                        </div>
+                        <div class="option">
+                            <input type="text" name="options[]" placeholder="Option C" required>
+                            <input type="radio" name="correct_option_0" value="2">
+                            <label>Correct</label>
+                        </div>
+                        <div class="option">
+                            <input type="text" name="options[]" placeholder="Option D" required>
+                            <input type="radio" name="correct_option_0" value="3">
+                            <label>Correct</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Repeat for more questions -->
+            </div>
+            <button type="button" onclick="addQuestion()">Add More Questions</button>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        let questionCount = 1;
+
+        function addQuestion() {
+            questionCount++;
+            const container = document.getElementById('questionsContainer');
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+            questionDiv.innerHTML = `
+                <label>Question ${questionCount}:</label>
+                <input type="text" name="questions[]" placeholder="Enter question text" required>
+                <div class="options">
+                    <div class="option">
+                        <input type="text" name="options[]" placeholder="Option A" required>
+                        <input type="radio" name="correct_option_${questionCount}" value="0">
+                        <label>Correct</label>
+                    </div>
+                    <div class="option">
+                        <input type="text" name="options[]" placeholder="Option B" required>
+                        <input type="radio" name="correct_option_${questionCount}" value="1">
+                        <label>Correct</label>
+                    </div>
+                    <div class="option">
+                        <input type="text" name="options[]" placeholder="Option C" required>
+                        <input type="radio" name="correct_option_${questionCount}" value="2">
+                        <label>Correct</label>
+                    </div>
+                    <div class="option">
+                        <input type="text" name="options[]" placeholder="Option D" required>
+                        <input type="radio" name="correct_option_${questionCount}" value="3">
+                        <label>Correct</label>
+                    </div>
+                </div>
+            `;
+            container.appendChild(questionDiv);
+        }
+
+        document.getElementById('quizForm').onsubmit = function (e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            fetch('/submit', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json()).then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
+            });
+        };
+    </script>
+</body>
+</html>
